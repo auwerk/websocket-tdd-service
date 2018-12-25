@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>WS test</title>
+	</head>
+	<body>
+		<script>
+		var ws = new WebSocket('ws://localhost:8088/myHandler');
+		ws.onopen = function(event) {
+			console.log('ws opened');
+		};
+		ws.onmessage = function(event) {
+			console.log('message incoming: ' + event.data);
+			var msgsDiv = document.querySelector("#messages");
+			var pNode = document.createElement("P");
+			var pTextNode = document.createTextNode(event.data);
+			pNode.appendChild(pTextNode);
+			msgsDiv.appendChild(pNode);
+		};
+		function testMsg() {
+			ws.send('test');
+		}
+		</script>
+		<button onclick="testMsg()">Test</button>
+		<div id="messages"></div>
+	</body>
+</html>
