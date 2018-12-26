@@ -9,5 +9,7 @@ import lombok.Data;
 public class WebSocketServiceProperties {
 
 	private String endpointUri;
+	private String responseMessagePayload;
+	private String periodicMessagePayload;
 
 }

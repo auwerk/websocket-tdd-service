@@ -1,21 +1,24 @@
 package org.auwerk.playground.websocketsvc.testutil;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
+import java.io.Closeable;
+import java.io.IOException;
 
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TestWebSocketSessionContainer<T extends TextWebSocketHandler> {
+public class TestWebSocketSessionContainer<T extends WebSocketHandler> implements Closeable {
 	private final T handler;
-	private final CompletableFuture<WebSocketSession> sessionFuture;
-
-	public WebSocketSession getSession() throws Exception {
-		return sessionFuture.get(500, TimeUnit.MILLISECONDS);
+	private final WebSocketSession session;
+	
+	@Override
+	public void close() throws IOException {
+		if (session != null) {
+			session.close();
+		}
 	}
 }

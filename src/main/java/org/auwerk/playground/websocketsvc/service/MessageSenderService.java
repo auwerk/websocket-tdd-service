@@ -1,16 +1,22 @@
 package org.auwerk.playground.websocketsvc.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import java.io.IOException;
 
+import org.springframework.web.socket.TextMessage;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class MessageSenderService {
+	private final BroadcastWebSocketHandler handler;
+	private final String periodicMessagePayload;
 
-	@Autowired
-	private MyTextHandler myTextHandler;
-
-	@Scheduled(fixedDelay = 2000)
-	public void periodicSend() {
-		myTextHandler.broadcastMessage("Hello, world!");
+	public void periodicSend() throws IOException {
+		handler.broadcastMessage(new TextMessage(periodicMessagePayload));
+	}
+	
+	public boolean testMocking() {
+		return true; // mock will return false
 	}
 
 }

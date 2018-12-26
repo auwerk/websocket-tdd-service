@@ -1,6 +1,6 @@
 package org.auwerk.playground.websocketsvc.config;
 
-import org.auwerk.playground.websocketsvc.service.MyTextHandler;
+import org.auwerk.playground.websocketsvc.service.MessageEchoService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,12 +21,12 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(myTextHandler(), properties.getEndpointUri());
+		registry.addHandler(messageEchoService(), properties.getEndpointUri());
 	}
 
 	@Bean
-	public MyTextHandler myTextHandler() {
-		return new MyTextHandler();
+	public MessageEchoService messageEchoService() {
+		return new MessageEchoService();
 	}
 
 }

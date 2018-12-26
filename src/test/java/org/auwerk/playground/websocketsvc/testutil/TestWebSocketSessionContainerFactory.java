@@ -1,7 +1,9 @@
 package org.auwerk.playground.websocketsvc.testutil;
 
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,8 +25,10 @@ public class TestWebSocketSessionContainerFactory {
 		this.client = client;
 	}
 
-	public <T extends TextWebSocketHandler> TestWebSocketSessionContainer<T> createContainer(T handler) {
+	public <T extends WebSocketHandler> TestWebSocketSessionContainer<T> createContainer(T handler,
+			long sessionTimeoutMillis) throws Exception {
 		var uri = String.format("ws://%s:%d%s", serverHost, serverPort, endpointUri);
-		return new TestWebSocketSessionContainer<T>(handler, client.doHandshake(handler, uri).completable());
+		return new TestWebSocketSessionContainer<T>(handler,
+				client.doHandshake(handler, uri).get(sessionTimeoutMillis, TimeUnit.MILLISECONDS));
 	}
 }
